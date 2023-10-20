@@ -5,6 +5,6 @@ export class UsersController {
 
     @Get('all')
     getAll(): string[] {
-        return ['a','b','c'];
+        return ['a','b','c','d'];
     }
 }

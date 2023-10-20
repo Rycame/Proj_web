@@ -13,7 +13,7 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 let UsersController = class UsersController {
     getAll() {
-        return ['a', 'b', 'c'];
+        return ['a', 'b', 'c', 'd'];
     }
 };
 exports.UsersController = UsersController;
