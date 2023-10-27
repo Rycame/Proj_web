@@ -21,21 +21,14 @@ export class UsersService {
     }
 
     getAll(): User[] {
-        if (users.length === 0) {
-            throw new HttpException('No user found',HttpStatus.NOT_FOUND)
-        }
         return users;
     }
 
     getById(id: number): User{
-        
         return users.find(user => user.id === id);
     }
 
     update(id: number, lastname?: string, firstname?: string, age?: number): User {
-        if (id === undefined) {
-            throw new HttpException('Could not find the user with the id ${id}',HttpStatus.NOT_FOUND);
-        }
         const user = this.getById(id);
         if (user) {
             if (lastname !== undefined) {
@@ -53,9 +46,6 @@ export class UsersService {
     }
 
     delete(id: number): boolean {
-        if (id === undefined) {
-            throw new HttpException('Could not find the user with the id ${id}',HttpStatus.NOT_FOUND);
-        }
         users.splice(id, 1);
         if (users[id] !== undefined) {
             return false;
