@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { assert } from 'console';
 
-const users: User[] = [
+export const users: User[] = [
     {
         id: 0,
         lastname: 'Doe',
@@ -15,35 +15,50 @@ const users: User[] = [
 export class UsersService {
 
     create(lastname: string, firstname: string, age: number): User {
-        const newUser = new User(lastname, firstname, age);
-        users.push(newUser);
-        return newUser;
+        const user = new User(lastname, firstname, age);
+        users.push(user);
+        return user;
     }
 
     getAll(): User[] {
+        if (users.length === 0) {
+            throw new HttpException('No user found',HttpStatus.NOT_FOUND)
+        }
         return users;
     }
 
-    getById(id: number): User | undefined {
+    getById(id: number): User{
+        
         return users.find(user => user.id === id);
     }
 
-    update(id: number, lastname?: string, firstname?: string, age?: number): User | undefined {
+    update(id: number, lastname?: string, firstname?: string, age?: number): User {
+        if (id === undefined) {
+            throw new HttpException('Could not find the user with the id ${id}',HttpStatus.NOT_FOUND);
+        }
         const user = this.getById(id);
         if (user) {
-            if (lastname !== undefined) user.lastname = lastname;
-            if (firstname !== undefined) user.firstname = firstname;
-            if (age !== undefined) user.age = age;
+            if (lastname !== undefined) {
+                user.lastname = lastname;
+            }
+            if (firstname !== undefined) {
+                user.firstname = firstname;
+            }
+            if (age !== undefined) {
+                user.age = age;}
+
         }
         return user;
     }
 
     delete(id: number): boolean {
-        const index = users.findIndex(user => user.id === id);
-        if (index !== -1) {
-            users.splice(index, 1);
-            return true;
+        if (id === undefined) {
+            throw new HttpException('Could not find the user with the id ${id}',HttpStatus.NOT_FOUND);
         }
-        return false;
+        users.splice(id, 1);
+        if (users[id] !== undefined) {
+            return false;
+        }
+        return true;
     }
 }
