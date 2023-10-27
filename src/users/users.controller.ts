@@ -5,7 +5,8 @@ const users : User[] = [
     {
         id: 0,
         lastname: 'Doe',
-        firstname: 'John'
+        firstname: 'John',
+        age: 23
     }
 ]
 @Controller('users')
@@ -25,7 +26,7 @@ export class UsersController {
     
 
 create(@Body() input: any): User {
-    const newUser = new User(input.lastname, input.firstname);
+    const newUser = new User(input.lastname, input.firstname, input.age);
     users.push(newUser);
     return newUser;
 }
