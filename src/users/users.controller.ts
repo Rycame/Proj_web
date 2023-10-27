@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Param, Get, Put } from '@nestjs/common';
+import { Controller, Body, Post, Param, Get, Put, Delete } from '@nestjs/common';
 import { User } from './user.entity';
 import { assert } from 'console';
 
@@ -14,7 +14,7 @@ const users: User[] = [
 export class UsersController {
 
     @Post()
-
+    
     @Get('')
     getAll(): User[] {
         return users;
@@ -40,6 +40,21 @@ export class UsersController {
         return user;
     }
 
+    //Delete qui return un boolean en fonction de si l'utilisateur a été supprimé ou non
+
+    //Il NE faut PAS utiliser la fonction delete, par exemple en faisant delete users[id]. 
+    //La fonction delete remplace la valeur par undefined, et ne retire pas complétement l'élément du tableau.
+    @Delete(':id')
+    delete(@Param() parameter): boolean {
+        assert(users[parameter.id], 'User not found');
+        users.splice(parameter.id, 1);
+        if (users[parameter.id] !== undefined) {
+            return false;
+        }
+        return true;
+    }
+
+
 
 create(@Body() input: any): User {
     const newUser = new User(input.lastname, input.firstname, input.age);
@@ -47,5 +62,6 @@ create(@Body() input: any): User {
     return newUser;
 }
 
+    
 }
 
