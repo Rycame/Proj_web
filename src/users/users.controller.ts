@@ -11,10 +11,12 @@ const users : User[] = [
 @Controller('users')
 export class UsersController {
 
-    @Get('all')
-    getAll(): string[] {
-        return ['a','b','c','d','e'];
-    }
+    /*
+        @Get('all')
+        getAll(): string[] {
+            return ['a','b','c','d','e'];
+        }
+    */
 @Post()
 /*
     créer une nouvelle instance de User (la syntaxe "à la Java" fonctionne : new User(param1, param2))
