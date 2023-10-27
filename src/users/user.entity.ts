@@ -6,7 +6,7 @@ export class User {
     firstname: string;
     public age: number;
 
-    constructor(lastname: string, firstname: string, age: 23) {
+    constructor(lastname: string, firstname: string, age: number) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.age = age;
