@@ -12,7 +12,4 @@ const users: User[] = [
 @Injectable()
 export class UsersService {}
 
-import { Injectable } from '@nestjs/common';
 
-@Injectable()
-export class UsersService {}
