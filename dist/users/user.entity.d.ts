@@ -1,5 +1,6 @@
-import { User } from './user.entity';
-export declare const users: User[];
-export declare class UsersController {
-    dgdfh: any;
+export declare class User {
+    id: number;
+    lastname: string;
+    firstname: string;
+    constructor(lastname: string, firstname: string);
 }
