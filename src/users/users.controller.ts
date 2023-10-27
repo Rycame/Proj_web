@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Param, Get, Put, Delete } from '@nestjs/common';
+import { Controller, Body, Post, Param, Get, Put, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './user.entity';
 import { assert } from 'console';
 
@@ -27,7 +27,9 @@ export class UsersController {
 
     @Put(':id')
     update(@Param() parameter, @Body() input: any): User {
-        assert(users[parameter.id], 'User not found');
+        if(users[parameter.id] === undefined){
+            throw new HttpException('Could not find a user with the id ${parameter.id}', HttpStatus.NOT_FOUND)
+        }
         const user = users[parameter.id];
         if (input.lastname !== undefined) {
             user.lastname = input.lastname;
@@ -46,8 +48,11 @@ export class UsersController {
     //La fonction delete remplace la valeur par undefined, et ne retire pas complétement l'élément du tableau.
     @Delete(':id')
     delete(@Param() parameter): boolean {
-        assert(users[parameter.id], 'User not found');
+        if(users[parameter.id] === undefined){
+            throw new HttpException('Could not find a user with the id ${parameter.id}', HttpStatus.NOT_FOUND)
+        }
         users.splice(parameter.id, 1);
+
         if (users[parameter.id] !== undefined) {
             return false;
         }
