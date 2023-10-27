@@ -45,7 +45,8 @@ export class UsersService {
                 user.firstname = firstname;
             }
             if (age !== undefined) {
-                user.age = age;}
+                user.age = age;
+            }
 
         }
         return user;
