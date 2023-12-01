@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { AssociationsController } from './associations/associations.controller';
 import { AssociationsService } from './associations/associations.service';
 import { AssociationsModule } from './associations/associations.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [TypeOrmModule.forRoot({type: 'sqlite',
