@@ -19,7 +19,10 @@ let AppModule = class AppModule {
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, associations_module_1.AssociationsModule],
+        imports: [TypeOrmModule.forRoot({ type: 'sqlite',
+                database: 'mydatabase.db',
+                entities: [],
+                synchronize: true, }), users_module_1.UsersModule, associations_module_1.AssociationsModule],
         controllers: [app_controller_1.AppController, associations_controller_1.AssociationsController],
         providers: [app_service_1.AppService, associations_service_1.AssociationsService],
     })
