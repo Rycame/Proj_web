@@ -5,55 +5,47 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UsersService = exports.users = void 0;
+exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const user_entity_1 = require("./user.entity");
-exports.users = [
-    {
-        id: 0,
-        lastname: 'Doe',
-        firstname: 'John',
-        age: 23
-    }
-];
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
 let UsersService = class UsersService {
-    create(lastname, firstname, age) {
-        const user = new user_entity_1.User(lastname, firstname, age);
-        exports.users.push(user);
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
+    async create(userData) {
+        const user = this.userRepository.create(userData);
+        await this.userRepository.save(user);
         return user;
     }
-    getAll() {
-        return exports.users;
+    async getAll() {
+        return this.userRepository.find();
     }
-    getById(id) {
-        return exports.users.find(user => user.id === id);
+    async getById(idToFind) {
+        return this.userRepository.findOne({ where: { id: (0, typeorm_2.Equal)(idToFind) } });
     }
-    update(id, lastname, firstname, age) {
-        const user = this.getById(id);
-        if (user) {
-            if (lastname !== undefined) {
-                user.lastname = lastname;
-            }
-            if (firstname !== undefined) {
-                user.firstname = firstname;
-            }
-            if (age !== undefined) {
-                user.age = age;
-            }
-        }
+    async update(id, updateData) {
+        const user = await this.getById(id);
+        Object.assign(user, updateData);
+        await this.userRepository.save(user);
         return user;
     }
-    delete(id) {
-        exports.users.splice(id, 1);
-        if (exports.users[id] !== undefined) {
-            return false;
-        }
-        return true;
+    async delete(id) {
+        await this.userRepository.delete(id);
     }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

@@ -11,20 +11,21 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const users_module_1 = require("./users/users.module");
-const associations_controller_1 = require("./associations/associations.controller");
-const associations_service_1 = require("./associations/associations.service");
 const associations_module_1 = require("./associations/associations.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const user_entity_1 = require("./users/user.entity");
+const associations_entity_1 = require("./associations/associations.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [TypeOrmModule.forRoot({ type: 'sqlite',
+        imports: [typeorm_1.TypeOrmModule.forRoot({ type: 'sqlite',
                 database: 'mydatabase.db',
-                entities: [],
+                entities: [user_entity_1.User, associations_entity_1.Association],
                 synchronize: true, }), users_module_1.UsersModule, associations_module_1.AssociationsModule],
-        controllers: [app_controller_1.AppController, associations_controller_1.AssociationsController],
-        providers: [app_service_1.AppService, associations_service_1.AssociationsService],
+        controllers: [app_controller_1.AppController],
+        providers: [app_service_1.AppService]
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

@@ -8,59 +8,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AssociationsService = void 0;
 const common_1 = require("@nestjs/common");
-const users_service_1 = require("../users/users.service");
 const associations_entity_1 = require("./associations.entity");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
 let AssociationsService = class AssociationsService {
-    constructor(service) {
-        this.service = service;
-        this.associations = [
-            new associations_entity_1.Association(1, [1, 2, 3], 'Association Example')
-        ];
+    constructor(associationRepository) {
+        this.associationRepository = associationRepository;
     }
-    create(idUsers, name) {
-        const newAssociation = new associations_entity_1.Association(this.associations.length + 1, idUsers, name);
-        this.associations.push(newAssociation);
+    async create(associationData) {
+        const newAssociation = this.associationRepository.create(associationData);
+        await this.associationRepository.save(newAssociation);
         return newAssociation;
     }
-    getAll() {
-        return this.associations;
+    async getAll() {
+        return this.associationRepository.find({ relations: ['users'] });
     }
-    getById(id) {
-        return this.associations.find(assoc => assoc.id === id);
+    async getById(idToFind) {
+        const association = await this.associationRepository.findOne({ where: { id: (0, typeorm_2.Equal)(idToFind) }, relations: ['users'] });
+        return association;
     }
-    update(id, idUsers, name) {
-        const association = this.getById(id);
-        if (association) {
-            association.idUsers = idUsers;
-            association.name = name;
-            return association;
-        }
-        return undefined;
+    async update(id, name) {
+        let association = await this.getById(id);
+        association.name = name;
+        await this.associationRepository.save(association);
+        return association;
     }
-    delete(id) {
-        const index = this.associations.findIndex(assoc => assoc.id === id);
-        if (index !== -1) {
-            this.associations.splice(index, 1);
-            return true;
-        }
-        return false;
+    async delete(id) {
+        await this.associationRepository.delete(id);
     }
-    getMembers(associationId) {
-        const association = this.associations.find(assoc => assoc.id === associationId);
-        if (!association) {
-            return [];
-        }
-        const memberIds = association.idUsers;
-        const members = memberIds.map(id => this.service.getById(id)).filter(user => user !== undefined);
-        return members;
+    async getMembers(associationId) {
+        const association = await this.getById(associationId);
+        const members = association.users;
+        return members.filter(user => user !== undefined);
     }
 };
 exports.AssociationsService = AssociationsService;
 exports.AssociationsService = AssociationsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [users_service_1.UsersService])
+    __param(0, (0, typeorm_1.InjectRepository)(associations_entity_1.Association)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], AssociationsService);
 //# sourceMappingURL=associations.service.js.map

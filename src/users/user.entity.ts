@@ -1,14 +1,15 @@
-import { Controller } from '@nestjs/common';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+@Entity()
 export class User {
+    @PrimaryGeneratedColumn()
     id: number;
-    lastname: string;
-    firstname: string;
-    public age: number;
 
-    constructor(lastname: string, firstname: string, age: number) {
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.age = age;
-    }
+    @Column()
+    firstname: string;
+
+    @Column()
+    lastname: string;
+
+
 }

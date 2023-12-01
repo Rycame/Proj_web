@@ -1,48 +1,41 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, HttpException, HttpStatus} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
-import { users } from './users.service';
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly service: UsersService) {}
 
     @Get()
-    getAll(): User[] {
+    async getAll(): Promise<User[]> {
         return this.service.getAll();
     }
 
     @Get(':id')
-    getById(@Param('id') id : number): User {
-        if (users[id] === undefined) {
-            throw new HttpException('Could not find the user with the id ${id}',HttpStatus.NOT_FOUND);
+    async getById(@Param('id') id: number): Promise<User> {
+        const user = await this.service.getById(id);
+        if (!user) {
+            throw new NotFoundException(`Could not find the user with the id ${id}`);
         }
-        return this.service.getById(id);
+        return user;
     }
 
     @Post()
-    create(@Body() input: { lastname: string, firstname: string, age: number }): User {
-        return this.service.create(input.lastname, input.firstname, input.age);
+    async create(@Body() userData: User): Promise<User> {
+        return this.service.create(userData);
     }
 
     @Put(':id')
-    update(
+    async update(
         @Param('id') id: number,
-        @Body() input: { lastname?: string, firstname?: string, age?: number }
-    ): User {
-        if (users[id] === undefined) {
-            throw new HttpException('Could not find the user with the id ${id}',HttpStatus.NOT_FOUND);
-        }
-        return this.service.update(id, input.lastname, input.firstname, input.age);
+        @Body() updateData: User
+    ): Promise<User> {
+        return this.service.update(id, updateData);
     }
 
     @Delete(':id')
-    delete(@Param('id') id: number): { success: boolean } {
-        if (users[id] === undefined) {
-            throw new HttpException('Could not find the user with the id ${id}',HttpStatus.NOT_FOUND);
-        }
-        return { success: this.service.delete(id) };
+    async delete(@Param('id') id: number): Promise<{ success: boolean }> {
+        await this.service.delete(id);
+        return { success: true };
     }
-    
 }
-

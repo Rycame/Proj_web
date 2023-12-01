@@ -1,7 +1,5 @@
 export declare class User {
     id: number;
-    lastname: string;
     firstname: string;
-    age: number;
-    constructor(lastname: string, firstname: string, age: number);
+    lastname: string;
 }
