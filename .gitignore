@@ -1,6 +1,4 @@
-dist/*
-dist/
-dist/tsconfig.build.tsbuildinfo
-node_modules/*
+./dist/*
+./node_modules/*
 ./src/.DS_Store
 ./.DS_Store
