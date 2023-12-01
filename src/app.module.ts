@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 import { Association } from './associations/associations.entity';
 
-
 @Module({
   imports: [TypeOrmModule.forRoot({type: 'sqlite',
     database: 'mydatabase.db',
