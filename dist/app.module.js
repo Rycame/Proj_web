@@ -13,11 +13,8 @@ const app_service_1 = require("./app.service");
 const users_module_1 = require("./users/users.module");
 const associations_module_1 = require("./associations/associations.module");
 const typeorm_1 = require("@nestjs/typeorm");
-<<<<<<< HEAD
 const user_entity_1 = require("./users/user.entity");
 const associations_entity_1 = require("./associations/associations.entity");
-=======
->>>>>>> 478c77a6af55adad636c2a0333d9d4041c44fc43
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
