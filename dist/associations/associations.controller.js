@@ -16,6 +16,7 @@ exports.AssociationsController = void 0;
 const common_1 = require("@nestjs/common");
 const associations_service_1 = require("./associations.service");
 const associations_entity_1 = require("./associations.entity");
+const swagger_1 = require("@nestjs/swagger");
 let AssociationsController = class AssociationsController {
     constructor(associationsService) {
         this.associationsService = associationsService;
@@ -88,6 +89,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AssociationsController.prototype, "getMembers", null);
 exports.AssociationsController = AssociationsController = __decorate([
+    (0, swagger_1.ApiTags)('associations'),
     (0, common_1.Controller)('associations'),
     __metadata("design:paramtypes", [associations_service_1.AssociationsService])
 ], AssociationsController);

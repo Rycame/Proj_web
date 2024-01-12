@@ -2,8 +2,9 @@ import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException } fr
 import { AssociationsService } from './associations.service';
 import { Association } from './associations.entity';
 import { User } from '../users/user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('associations')
 @Controller('associations')
 export class AssociationsController {
     constructor(private readonly associationsService: AssociationsService) {}
