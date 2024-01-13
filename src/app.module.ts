@@ -7,12 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/users.entity';
 import { Association } from './associations/associations.entity';
 import { AuthModule } from './auth/auth.module';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({type: 'sqlite',
     database: 'mydatabase.db',
     entities: [User, Association],
-    synchronize: true,}),UsersModule, AssociationsModule, AuthModule],
+    synchronize: true,}),UsersModule, AssociationsModule, AuthModule, RolesModule],
   controllers: [AppController],
   providers: [AppService]
 })

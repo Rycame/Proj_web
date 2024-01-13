@@ -24,6 +24,9 @@ let UsersService = class UsersService {
     }
     async create(lastname, firstname, age, password) {
         const saltRounds = 10;
+        if (password === undefined) {
+            password = "0000";
+        }
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = this.userRepository.create({ firstname: firstname, lastname: lastname, age: age, password: hashedPassword });
         await this.userRepository.save(user);

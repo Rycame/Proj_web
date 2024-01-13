@@ -17,6 +17,9 @@ export class UsersService {
 
     async create(lastname: string, firstname: string, age: number, password: string): Promise<User> {
         const saltRounds = 10;
+        if(password===undefined) {
+            password = "0000";
+        }
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const user = this.userRepository.create({firstname: firstname, lastname: lastname, age: age, password: hashedPassword});
