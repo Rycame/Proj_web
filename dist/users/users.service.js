@@ -17,12 +17,15 @@ const common_1 = require("@nestjs/common");
 const users_entity_1 = require("./users.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const bcrypt = require("bcrypt");
 let UsersService = class UsersService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
-    async create(lastname, firstname, age) {
-        const user = this.userRepository.create({ firstname: firstname, lastname: lastname, age: age });
+    async create(lastname, firstname, age, password) {
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const user = this.userRepository.create({ firstname: firstname, lastname: lastname, age: age, password: hashedPassword });
         await this.userRepository.save(user);
         return user;
     }
