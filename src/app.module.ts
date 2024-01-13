@@ -10,6 +10,7 @@ import { Association } from './associations/associations.entity';
 import { Minute } from './minutes/minute.entity';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
+import { Role } from './roles/roles.entity';
 
 @Module({
   imports: [
