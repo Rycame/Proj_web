@@ -15,6 +15,7 @@ const associations_module_1 = require("./associations/associations.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const users_entity_1 = require("./users/users.entity");
 const associations_entity_1 = require("./associations/associations.entity");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -23,7 +24,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [typeorm_1.TypeOrmModule.forRoot({ type: 'sqlite',
                 database: 'mydatabase.db',
                 entities: [users_entity_1.User, associations_entity_1.Association],
-                synchronize: true, }), users_module_1.UsersModule, associations_module_1.AssociationsModule],
+                synchronize: true, }), users_module_1.UsersModule, associations_module_1.AssociationsModule, auth_module_1.AuthModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService]
     })
