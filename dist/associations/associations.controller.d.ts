@@ -1,6 +1,6 @@
 import { AssociationsService } from './associations.service';
 import { Association } from './associations.entity';
-import { User } from '../users/user.entity';
+import { User } from '../users/users.entity';
 export declare class AssociationsController {
     private readonly associationsService;
     constructor(associationsService: AssociationsService);

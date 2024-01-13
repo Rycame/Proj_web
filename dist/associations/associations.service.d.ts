@@ -1,5 +1,5 @@
 import { Association } from './associations.entity';
-import { User } from '../users/user.entity';
+import { User } from '../users/users.entity';
 import { Repository } from 'typeorm';
 export declare class AssociationsService {
     private associationRepository;

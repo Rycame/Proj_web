@@ -48,12 +48,18 @@ let AssociationsController = class AssociationsController {
 exports.AssociationsController = AssociationsController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Retrieve all associations' }),
+    (0, swagger_1.ApiOkResponse)({ description: 'List of all associations' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AssociationsController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get an association by ID' }),
+    (0, swagger_1.ApiParam)({ name: 'id', type: 'number', description: 'Association ID' }),
+    (0, swagger_1.ApiOkResponse)({ description: 'The found association record' }),
+    (0, swagger_1.ApiNotFoundResponse)({ description: 'Association not found' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -61,6 +67,8 @@ __decorate([
 ], AssociationsController.prototype, "getById", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Create a new association' }),
+    (0, swagger_1.ApiCreatedResponse)({ description: 'The association has been successfully created.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [associations_entity_1.Association]),
@@ -68,6 +76,10 @@ __decorate([
 ], AssociationsController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Update an existing association' }),
+    (0, swagger_1.ApiParam)({ name: 'id', type: 'number', description: 'Association ID' }),
+    (0, swagger_1.ApiOkResponse)({ description: 'The association has been successfully updated.' }),
+    (0, swagger_1.ApiNotFoundResponse)({ description: 'Association not found' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -76,6 +88,10 @@ __decorate([
 ], AssociationsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Delete an association' }),
+    (0, swagger_1.ApiParam)({ name: 'id', type: 'number', description: 'Association ID' }),
+    (0, swagger_1.ApiOkResponse)({ description: 'The association has been successfully deleted.' }),
+    (0, swagger_1.ApiNotFoundResponse)({ description: 'Association not found' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -83,6 +99,10 @@ __decorate([
 ], AssociationsController.prototype, "delete", null);
 __decorate([
     (0, common_1.Get)(':id/members'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get members of an association' }),
+    (0, swagger_1.ApiParam)({ name: 'id', type: 'number', description: 'Association ID' }),
+    (0, swagger_1.ApiOkResponse)({ description: 'List of association members' }),
+    (0, swagger_1.ApiNotFoundResponse)({ description: 'Association not found' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

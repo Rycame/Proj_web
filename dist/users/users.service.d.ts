@@ -1,9 +1,9 @@
-import { User } from './user.entity';
+import { User } from './users.entity';
 import { Repository } from 'typeorm';
 export declare class UsersService {
     private userRepository;
     constructor(userRepository: Repository<User>);
-    create(userData: User): Promise<User>;
+    create(lastname: string, firstname: string, age: number): Promise<User>;
     getAll(): Promise<User[]>;
     getById(idToFind: number): Promise<User>;
     update(id: number, updateData: User): Promise<User>;

@@ -11,21 +11,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Association = void 0;
 const typeorm_1 = require("typeorm");
-const user_entity_1 = require("../users/user.entity");
+const users_entity_1 = require("../users/users.entity");
+const swagger_1 = require("@nestjs/swagger");
 let Association = class Association {
 };
 exports.Association = Association;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, swagger_1.ApiProperty)({
+        description: 'The unique identifier of the association',
+        example: 1,
+        type: Number,
+    }),
     __metadata("design:type", Number)
 ], Association.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, swagger_1.ApiProperty)({
+        description: 'The name of the association',
+        example: "Computer Science Class",
+        type: String,
+    }),
     __metadata("design:type", String)
 ], Association.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(type => user_entity_1.User, { eager: true }),
+    (0, typeorm_1.ManyToMany)(type => users_entity_1.User, { eager: true }),
     (0, typeorm_1.JoinTable)(),
+    (0, swagger_1.ApiProperty)({
+        description: 'List of users associated with this association',
+        example: '[{ "id": 1, "firstname": "John", "lastname": "Doe", "age": 28 }, { "id": 2, "firstname": "Jane", "lastname": "Doe", "age": 25 }]',
+        type: 'array',
+        isArray: true
+    }),
     __metadata("design:type", Array)
 ], Association.prototype, "users", void 0);
 exports.Association = Association = __decorate([
