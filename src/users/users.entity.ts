@@ -35,7 +35,7 @@ export class User {
     })
     age: number;
 
-    @Column({ unique: true, nullable: false })
+    @Column({ unique: true, nullable: true })
     @ApiProperty({
         description: 'The password of the user',
         example: 'a_strong_password',
