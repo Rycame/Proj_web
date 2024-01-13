@@ -34,7 +34,7 @@ export class UsersController {
     @ApiOperation({ summary: 'Create a new user' })
     @ApiCreatedResponse({ description: 'The user has been successfully created.' })
     async create(@Body() input: UserInput): Promise<User> {
-        return this.service.create(input.lastname, input.firstname, input.age);
+        return this.service.create(input.lastname, input.firstname, input.age, input.password);
     }
 
 

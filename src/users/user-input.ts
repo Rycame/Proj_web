@@ -18,9 +18,15 @@ export class UserInput {
 
     @ApiProperty({
         description: 'The age of the user',
-        minimum: 18,
-        default: 18,
+        example: 18,
         type: Number,
     })
     public age: number;
+
+    @ApiProperty({
+        description: 'The password of the user',
+        example: "a_strong_password",
+        type: String,
+    })
+    public password: string;
 }
