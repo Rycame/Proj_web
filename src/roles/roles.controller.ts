@@ -25,7 +25,7 @@ export class RolesController {
     return this.rolesService.getAll();
   }
 
-  @Get(':idUser/:idAssociation')
+  @Get('/any/:idUser/:idAssociation')
   @ApiOperation({ summary: 'Get a specific role' })
   @ApiOkResponse({ description: 'The role data' })
   @ApiNotFoundResponse({ description: 'Role not found' })
