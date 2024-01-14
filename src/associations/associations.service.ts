@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Association } from './associations.entity';
+import { Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
+import { Association } from './association.entity';
 import { User } from '../users/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Equal } from 'typeorm';
 import { AssociationDTO } from './association.dto';
 import { Member } from './association.member';
-import { RolesService } from 'src/roles/roles.service';
+import { RolesService } from '../roles/roles.service';
 
 @Injectable()
 export class AssociationsService {
@@ -13,27 +13,26 @@ export class AssociationsService {
     constructor(
         @InjectRepository(Association)
         private associationRepository: Repository<Association>,
+        @Inject(forwardRef(() => RolesService))
         private rolesService: RolesService,
     ) {}
 
-    async create(associationData: Association): Promise<AssociationDTO> {
+    async create(associationData: Association): Promise<Association> {
         const newAssociation = this.associationRepository.create(associationData);
         await this.associationRepository.save(newAssociation);
-        return this.toDTO(newAssociation);
+        return newAssociation;
     }
 
-    async getAll(): Promise<AssociationDTO[]> {
-        const associations = await this.associationRepository.find({relations: ['users']});
-        return Promise.all(associations.map(association => this.toDTO(association)));
-    }
-    
-
-    async getById(idToFind: number): Promise<AssociationDTO> {
-        const association = await this.associationRepository.findOne({ where: {id: idToFind}, relations: ['users']});
-        return this.toDTO(association);
+    async getAll(): Promise<Association[]> {
+        return this.associationRepository.find({relations: ['users']});
     }
 
-    async update(id: number, name: string): Promise<AssociationDTO> {
+    async getById(idToFind: number): Promise<Association> {
+        const association = await this.associationRepository.findOne({ where: {id: Equal(idToFind)}, relations: ['users']});
+        return association;
+    }
+
+    async update(id: number, name: string): Promise<Association> {
         let association = await this.getById(id);
         association.name = name;
         await this.associationRepository.save(association);
@@ -45,16 +44,12 @@ export class AssociationsService {
     }
 
     async getMembers(associationId: number): Promise<Member[]> {
-        const associationDTO = await this.getById(associationId);
-        if (!associationDTO) {
-            throw new NotFoundException(`Association with ID ${associationId} not found`);
-        }
+        const associationDTO = await this.toDTO(await this.getById(associationId));
         return associationDTO.members;
     }
     
-    
 
-    private async toDTO(association: Association): Promise<AssociationDTO> {
+    async toDTO(association: Association): Promise<AssociationDTO> {
         const memberPromises = association.users.map(user => 
           this.userToMember(user, association.id)
         );
@@ -68,7 +63,7 @@ export class AssociationsService {
         };
     }
 
-    private async userToMember(user: User, associationId: number): Promise<Member> {
+    async userToMember(user: User, associationId: number): Promise<Member> {
         const role = await this.rolesService.getByIds(user.id, associationId);
         return {
             userId: user.id,

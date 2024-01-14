@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../users/user.entity';
-import { Association } from '../associations/associations.entity';
+import { Association } from '../associations/association.entity';
 
 @Entity()
 export class Minute {

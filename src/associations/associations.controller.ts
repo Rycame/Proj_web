@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException } from '@nestjs/common';
 import { AssociationsService } from './associations.service';
-import { Association } from './associations.entity';
+import { Association } from './association.entity';
 import { User } from '../users/user.entity';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiNotFoundResponse, ApiCreatedResponse, ApiParam } from '@nestjs/swagger';
 import { AssociationDTO } from './association.dto';
@@ -15,7 +15,7 @@ export class AssociationsController {
     @ApiOperation({ summary: 'Retrieve all associations' })
     @ApiOkResponse({ description: 'List of all associations' })
     async getAll(): Promise<AssociationDTO[]> {
-        return this.associationsService.getAll();
+        return Promise.all((await this.associationsService.getAll()).map(association => this.associationsService.toDTO(association)))
     }
 
     @Get(':id')
@@ -28,14 +28,14 @@ export class AssociationsController {
         if (!association) {
             throw new NotFoundException(`Association with ID ${id} not found`);
         }
-        return association;
+        return this.associationsService.toDTO(association);
     }
 
     @Post()
     @ApiOperation({ summary: 'Create a new association' })
     @ApiCreatedResponse({ description: 'The association has been successfully created.' })
     async create(@Body() associationData: Association): Promise<AssociationDTO> {
-        return this.associationsService.create(associationData);
+        return this.associationsService.toDTO(await this.associationsService.create(associationData));
     }
 
     @Put(':id')
@@ -44,7 +44,7 @@ export class AssociationsController {
     @ApiOkResponse({ description: 'The association has been successfully updated.' })
     @ApiNotFoundResponse({ description: 'Association not found' })
     async update(@Param('id') id: number, @Body() body: { name: string }): Promise<AssociationDTO> {
-        return this.associationsService.update(id, body.name);
+        return this.associationsService.toDTO(await this.associationsService.update(id, body.name));
     }
     
     @Delete(':id')
