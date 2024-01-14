@@ -43,4 +43,16 @@ export class MinutesService {
       throw new NotFoundException(`Minute with ID "${id}" not found`);
     }
   }
+  
+  
+
+
+
+  async findMinutesByAssociationId(associationId: number, sort: 'ASC' | 'DESC' = 'ASC'): Promise<Minute[]> {
+    return this.minutesRepository.find({
+      where: { association: {id: associationId } },
+      order: { date: sort }
+    });
+  }
+  
 }

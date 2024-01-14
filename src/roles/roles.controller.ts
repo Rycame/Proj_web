@@ -3,6 +3,7 @@ import { RolesService } from './roles.service';
 import { RoleInput } from './role.input';
 import { RoleUpdate } from './role.update';
 import { ApiTags, ApiOperation, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse, ApiBody } from '@nestjs/swagger';
+import { User } from 'src/users/user.entity';
 
 @ApiTags('roles')
 @Controller('roles')
@@ -24,7 +25,7 @@ export class RolesController {
     return this.rolesService.getAll();
   }
 
-  @Get(':idUser/:idAssociation')
+  @Get('/any/:idUser/:idAssociation')
   @ApiOperation({ summary: 'Get a specific role' })
   @ApiOkResponse({ description: 'The role data' })
   @ApiNotFoundResponse({ description: 'Role not found' })
@@ -57,4 +58,12 @@ export class RolesController {
       return this.rolesService.delete(idUser, idAssociation);
   }
   
+
+  @Get('/users/:name')
+  async getUsersByRoleName(@Param('name') roleName: string): Promise<User[]> {
+    return this.rolesService.getUsersByRoleName(roleName);
+  }
+  
+
+
 }
