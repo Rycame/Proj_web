@@ -1,22 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
-import { User } from '../users/users.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, JoinColumn } from 'typeorm';
+import { User } from '../users/user.entity';
 import { Association } from '../associations/associations.entity';
 
 @Entity()
 export class Minute {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  content: string;
+    @Column()
+    date: string;
 
-  @Column({ type: 'date' })
-  date: Date;
+    @Column('text')
+    content: string;
 
-  @ManyToMany(() => User, { eager: true })
-  @JoinTable()
-  voters: User[];
+    @ManyToMany(() => User)
+    @JoinTable()
+    voters: User[];
 
-  @ManyToOne(() => Association)
-  association: Association;
+    @ManyToOne(() => Association)
+    @JoinColumn()
+    association: Association;
 }

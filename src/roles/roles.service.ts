@@ -12,16 +12,27 @@ export class RolesService {
     private roleRepository: Repository<Role>,
   ) {}
 
-  async createRole(roleInput: RoleInput): Promise<Role> {
+  async create(roleInput: RoleInput): Promise<Role> {
+    const existingRole = await this.roleRepository.findOne({
+      where: {
+        idUser: roleInput.idUser,
+        idAssociation: roleInput.idAssociation
+      }
+    });
+  
+    if (existingRole) {
+      return existingRole;
+    }
     const newRole = this.roleRepository.create(roleInput);
-    return this.roleRepository.save(newRole);
+    await this.roleRepository.save(newRole);
+    return newRole;
   }
 
-  async getAllRoles(): Promise<Role[]> {
+  async getAll(): Promise<Role[]> {
     return this.roleRepository.find();
   }
 
-  async getRoleByIds(idUser: number, idAssociation: number): Promise<Role> {
+  async getByIds(idUser: number, idAssociation: number): Promise<Role> {
     const role = await this.roleRepository.findOne({
       where: {
         idUser: idUser,
@@ -37,14 +48,14 @@ export class RolesService {
   }
   
 
-  async updateRole(idUser: number, idAssociation: number, roleUpdate: RoleUpdate): Promise<Role> {
-    const role = await this.getRoleByIds(idUser, idAssociation);
+  async update(idUser: number, idAssociation: number, roleUpdate: RoleUpdate): Promise<Role> {
+    const role = await this.getByIds(idUser, idAssociation);
     Object.assign(role, roleUpdate);
     return this.roleRepository.save(role);
   }
   
 
-  async deleteRole(idUser: number, idAssociation: number): Promise<void> {
+  async delete(idUser: number, idAssociation: number): Promise<void> {
     const result = await this.roleRepository.delete({ idUser, idAssociation });
     if (result.affected === 0) {
       throw new NotFoundException(`Role with user ID ${idUser} and association ID ${idAssociation} not found`);

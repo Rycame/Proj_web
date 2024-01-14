@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './users.entity';
+import { User } from './user.entity';
 import { ApiCreatedResponse, ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { UserInput } from './user-input';
 

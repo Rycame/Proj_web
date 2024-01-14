@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException } from '@nestjs/common';
 import { AssociationsService } from './associations.service';
 import { Association } from './associations.entity';
-import { User } from '../users/users.entity';
+import { User } from '../users/user.entity';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiNotFoundResponse, ApiCreatedResponse, ApiParam } from '@nestjs/swagger';
 
 @ApiTags('associations')

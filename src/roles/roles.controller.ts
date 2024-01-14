@@ -14,14 +14,14 @@ export class RolesController {
   @ApiCreatedResponse({ description: 'The role has been successfully created.' })
   @ApiBody({ type: RoleInput })
   async create(@Body() roleInput: RoleInput) {
-    return this.rolesService.createRole(roleInput);
+    return this.rolesService.create(roleInput);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all roles' })
   @ApiOkResponse({ description: 'List of all roles' })
   async findAll() {
-    return this.rolesService.getAllRoles();
+    return this.rolesService.getAll();
   }
 
   @Get(':idUser/:idAssociation')
@@ -29,7 +29,7 @@ export class RolesController {
   @ApiOkResponse({ description: 'The role data' })
   @ApiNotFoundResponse({ description: 'Role not found' })
   async findOne(@Param('idUser') idUser: number, @Param('idAssociation') idAssociation: number) {
-    return this.rolesService.getRoleByIds(idUser, idAssociation);
+    return this.rolesService.getByIds(idUser, idAssociation);
   }
   
 
@@ -42,7 +42,7 @@ export class RolesController {
       @Param('idAssociation') idAssociation: number, 
       @Body() roleUpdate: RoleUpdate
   ) {
-      return this.rolesService.updateRole(idUser, idAssociation, roleUpdate);
+      return this.rolesService.update(idUser, idAssociation, roleUpdate);
   }
   
 
@@ -54,7 +54,7 @@ export class RolesController {
       @Param('idUser') idUser: number, 
       @Param('idAssociation') idAssociation: number
   ) {
-      return this.rolesService.deleteRole(idUser, idAssociation);
+      return this.rolesService.delete(idUser, idAssociation);
   }
   
 }
