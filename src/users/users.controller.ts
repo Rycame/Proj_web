@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { ApiCreatedResponse, ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { UserInput } from './user-input';
+import { Role } from 'src/roles/roles.entity';
 
 @ApiTags('users')
 @Controller('users')
@@ -60,4 +61,11 @@ export class UsersController {
         await this.service.delete(id);
         return { success: true };
     }
+
+
+    @Get(':id/roles')
+    async getUserRoles(@Param('id') userId: number): Promise<Role[]> {
+      return this.service.getRolesByUserId(userId);
+    }
+    
 }

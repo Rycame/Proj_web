@@ -6,6 +6,8 @@ import { Repository, Equal } from 'typeorm';
 import { AssociationDTO } from './association.dto';
 import { Member } from './association.member';
 import { RolesService } from '../roles/roles.service';
+import { Minute } from 'src/minutes/minute.entity';
+import { MinutesService } from 'src/minutes/minutes.service';
 
 @Injectable()
 export class AssociationsService {
@@ -15,6 +17,8 @@ export class AssociationsService {
         private associationRepository: Repository<Association>,
         @Inject(forwardRef(() => RolesService))
         private rolesService: RolesService,
+        @Inject(forwardRef(() => MinutesService))
+        private minutesService: MinutesService
     ) {}
 
     async create(associationData: Association): Promise<Association> {
@@ -50,6 +54,14 @@ export class AssociationsService {
     
 
     async toDTO(association: Association): Promise<AssociationDTO> {
+        if (!association.users) {
+            return {
+              id: association.id,
+              name: association.name,
+              members: []
+            };
+          }
+
         const memberPromises = association.users.map(user => 
           this.userToMember(user, association.id)
         );
@@ -72,4 +84,14 @@ export class AssociationsService {
             role: role.name
         };
     }
+
+
+
+
+
+
+    async getMinutesByAssociationId(associationId: number, sort: 'ASC' | 'DESC' = 'ASC'): Promise<Minute[]> {
+        return this.minutesService.findMinutesByAssociationId(associationId, sort);
+      }
+      
 }

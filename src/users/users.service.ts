@@ -1,10 +1,10 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { User } from './user.entity';
-import { assert } from 'console';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Equal } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { RolesService } from 'src/roles/roles.service';
+import { Role } from 'src/roles/roles.entity';
 
 
 
@@ -47,5 +47,14 @@ export class UsersService {
     async delete(id: number): Promise<void> {
         await this.userRepository.delete(id);
     } 
+
+
+
+
+
+    async getRolesByUserId(userId: number): Promise<Role[]> {
+        const roles = await this.rolesService.findRolesByUserId(userId);
+        return roles;
+      }
     
 }

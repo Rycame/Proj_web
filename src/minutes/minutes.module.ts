@@ -8,5 +8,6 @@ import { Minute } from './minute.entity';
   imports: [TypeOrmModule.forFeature([Minute])],
   controllers: [MinutesController],
   providers: [MinutesService],
+  exports: [MinutesService],
 })
 export class MinutesModule {}

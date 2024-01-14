@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Role } from './roles.entity';
 import { RoleInput } from './role.input';
 import { RoleUpdate } from './role.update';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class RolesService {
@@ -61,5 +62,30 @@ export class RolesService {
       throw new NotFoundException(`Role with user ID ${idUser} and association ID ${idAssociation} not found`);
     }
   }
+
+
+
+
+  async findRolesByUserId(userId: number): Promise<Role[]> {
+    const roles = await this.roleRepository.find({
+      where: { idUser: userId },
+      relations: ['user', 'association']
+    });
+    if (!roles) {
+      throw new NotFoundException(`No roles found for user with ID ${userId}`);
+    }
+    return roles;
+  }
+  
+  async getUsersByRoleName(roleName: string): Promise<User[]> {
+    const users = await this.roleRepository
+      .createQueryBuilder('role')
+      .leftJoinAndSelect('role.user', 'user')
+      .where('role.name = :roleName', { roleName })
+      .select(['user.id', 'user.firstname', 'user.lastname', 'user.age', 'user.password'])
+      .getMany();
+    return users.map(role => role.user);
+  }
+  
   
 }

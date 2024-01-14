@@ -1,15 +1,18 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException, Query, BadRequestException } from '@nestjs/common';
 import { AssociationsService } from './associations.service';
 import { Association } from './association.entity';
 import { User } from '../users/user.entity';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiNotFoundResponse, ApiCreatedResponse, ApiParam } from '@nestjs/swagger';
 import { AssociationDTO } from './association.dto';
 import { Member } from './association.member';
+import { Minute } from 'src/minutes/minute.entity';
 
 @ApiTags('associations')
 @Controller('associations')
 export class AssociationsController {
-    constructor(private readonly associationsService: AssociationsService) {}
+    constructor(
+        private readonly associationsService: AssociationsService
+        ) {}
 
     @Get()
     @ApiOperation({ summary: 'Retrieve all associations' })
@@ -65,4 +68,19 @@ export class AssociationsController {
     async getMembers(@Param('id') associationId: number): Promise<Member[]> {
         return this.associationsService.getMembers(associationId);
     }
+
+
+
+
+
+
+
+    @Get('/:id/minutes')
+    async getAssociationMinutes(@Param('id') associationId: number, @Query('sort') sort: string = 'ASC'): Promise<Minute[]> {
+      const validSort = sort.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+      return this.associationsService.getMinutesByAssociationId(associationId, validSort);
+    }
+    
+    
+    
 }
