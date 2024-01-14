@@ -3,6 +3,8 @@ import { AssociationsService } from './associations.service';
 import { Association } from './associations.entity';
 import { User } from '../users/user.entity';
 import { ApiTags, ApiOperation, ApiOkResponse, ApiNotFoundResponse, ApiCreatedResponse, ApiParam } from '@nestjs/swagger';
+import { AssociationDTO } from './association.dto';
+import { Member } from './association.member';
 
 @ApiTags('associations')
 @Controller('associations')
@@ -12,7 +14,7 @@ export class AssociationsController {
     @Get()
     @ApiOperation({ summary: 'Retrieve all associations' })
     @ApiOkResponse({ description: 'List of all associations' })
-    async getAll(): Promise<Association[]> {
+    async getAll(): Promise<AssociationDTO[]> {
         return this.associationsService.getAll();
     }
 
@@ -21,7 +23,7 @@ export class AssociationsController {
     @ApiParam({ name: 'id', type: 'number', description: 'Association ID' })
     @ApiOkResponse({ description: 'The found association record' })
     @ApiNotFoundResponse({ description: 'Association not found' })
-    async getById(@Param('id') id: number): Promise<Association> {
+    async getById(@Param('id') id: number): Promise<AssociationDTO> {
         const association = await this.associationsService.getById(id);
         if (!association) {
             throw new NotFoundException(`Association with ID ${id} not found`);
@@ -32,7 +34,7 @@ export class AssociationsController {
     @Post()
     @ApiOperation({ summary: 'Create a new association' })
     @ApiCreatedResponse({ description: 'The association has been successfully created.' })
-    async create(@Body() associationData: Association): Promise<Association> {
+    async create(@Body() associationData: Association): Promise<AssociationDTO> {
         return this.associationsService.create(associationData);
     }
 
@@ -41,7 +43,7 @@ export class AssociationsController {
     @ApiParam({ name: 'id', type: 'number', description: 'Association ID' })
     @ApiOkResponse({ description: 'The association has been successfully updated.' })
     @ApiNotFoundResponse({ description: 'Association not found' })
-    async update(@Param('id') id: number, @Body() body: { name: string }): Promise<Association> {
+    async update(@Param('id') id: number, @Body() body: { name: string }): Promise<AssociationDTO> {
         return this.associationsService.update(id, body.name);
     }
     
@@ -60,7 +62,7 @@ export class AssociationsController {
     @ApiParam({ name: 'id', type: 'number', description: 'Association ID' })
     @ApiOkResponse({ description: 'List of association members' })
     @ApiNotFoundResponse({ description: 'Association not found' })
-    async getMembers(@Param('id') associationId: number): Promise<User[]> {
+    async getMembers(@Param('id') associationId: number): Promise<Member[]> {
         return this.associationsService.getMembers(associationId);
     }
 }
