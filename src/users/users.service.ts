@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { User } from './user.entity';
 import { assert } from 'console';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Equal } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { RolesService } from 'src/roles/roles.service';
 
 
 
@@ -13,6 +14,8 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
+        @Inject(forwardRef(() => RolesService))
+        private rolesService: RolesService
     ) {}
 
     async create(lastname: string, firstname: string, age: number, password: string): Promise<User> {
